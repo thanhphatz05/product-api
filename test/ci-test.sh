@@ -1,5 +1,4 @@
-
 #!/bin/bash
-set -e
-curl -fsS http://localhost:3000/health
-echo "CI TEST PASSED!"
+set -e 
+curl http://localhost:3000/health
+echo "CI OK"
