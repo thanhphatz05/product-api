@@ -10,10 +10,14 @@ const productSchema = new mongoose.Schema(
       unique: true
     },
 
+    // pname: {
+    //   type: String,
+    //   required: true,
+    // },
     pname: {
-      type: String,
-      required: true
-    },
+    type: String,
+    required: false
+   },
 
     price: {
       type: Number,
