@@ -6,14 +6,13 @@ const productSchema = new mongoose.Schema(
   {
     pid: {
       type: String,
-      required: true,
+      required: false,
       unique: true
     },
     pname: {
     type: String,
     required: false
    },
-
     price: {
       type: Number,
       required: true,
