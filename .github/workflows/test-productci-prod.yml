@@ -4,20 +4,31 @@ name: Product CI Prod
 on: [push, workflow_dispatch]
 
 jobs:
-  test-prod:
+  crud-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-
       - run: npm ci
-
       - run: docker compose up -d --build --wait --wait-timeout 120
-
       - run: node test/api.test.js
-
       - if: always()
         run: docker compose down -v
+
+  docker-publish:
+    needs: crud-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/product-api:latest
